@@ -3,7 +3,7 @@ import CodiceFiscale from "./codiceFiscale.js";
 function isEmpty(obj) {
 
     if(!obj) return true;
-    
+
     for(const property in obj) {
         if(!obj[property]) return true;
     }
@@ -41,9 +41,18 @@ function getUserFormData() {
     else alert('Inserire un formato valido');
 }
 
+function getCodeToValidate() {
+    const codeInput = document.querySelector('#code');
+
+    return codeInput.value;
+}
+
 function init() {
-    const form = document.querySelector('.insert-form');
-    form.addEventListener('submit', async (e) => {
+    const creationForm = document.querySelector('.creation-form');
+    const validateForm = document.querySelector('.validate-form');
+
+    //Creazione
+    creationForm.addEventListener('submit', async (e) => {
         
         e.preventDefault();
         
@@ -54,10 +63,28 @@ function init() {
             const cf = new CodiceFiscale();
             const newCode = await cf.generateCode(userData);  
             
-            const output = document.querySelector('.output');
+            const output = document.querySelector('.creation-output');
             output.innerText = newCode;
+
+            creationForm.reset();
         }
     });
+
+    validateForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const codeToValidate = getCodeToValidate();
+
+        const cf = new CodiceFiscale();
+        const isCodeValid = await cf.validateCode(codeToValidate.toLowerCase());
+
+        const output = document.querySelector('.validation-output');
+        
+        output.innerText = isCodeValid ? 'Codice Fiscale valido' : 'Codice Fiscale NON valido';
+        
+
+        validateForm.reset();
+    })
 }
 
 init();

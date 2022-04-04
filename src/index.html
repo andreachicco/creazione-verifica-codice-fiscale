@@ -11,20 +11,20 @@
 <body>
     <div class="container">
 
-      <div class="crea-codice-fiscale">
+      <div class="create-codice">
         <h2 class="title text-center mt-5">GENERA CODICE FISCALE</h2>
 
-        <form class="insert-form mt-5">
+        <form class="creation-form mt-5">
             <!-- Nome e Cognome -->
             <div class="row">
               <div class="col-12 col-md-6 mb-4">
                 <div class="form-outline form-white">
-                  <input type="text" id="surname" placeholder="Cognome" class="form-control form-control-lg" />
+                  <input type="text" id="surname" autocomplete="off" placeholder="Cognome" class="form-control form-control-lg" />
                 </div>
               </div>
               <div class="col-12 col-md-6 mb-4">
                 <div class="form-outline form-white">
-                  <input type="text" id="name" placeholder="Nome" class="form-control form-control-lg" />
+                  <input type="text" id="name" autocomplete="off" placeholder="Nome" class="form-control form-control-lg" />
                 </div>
               </div>
             </div>
@@ -51,12 +51,12 @@
             <div class="row">
               <div class="col-12 col-md-9 mb-4">
                 <div class="form-outline form-white">
-                  <input type="text" id="town" placeholder="Comune di nascita" class="form-control form-control-lg" />
+                  <input type="text" id="town" autocomplete="off" placeholder="Comune di nascita" class="form-control form-control-lg" />
                 </div>
               </div>
               <div class="col-12 col-md-3 mb-4">
                 <div class="form-outline form-white">
-                  <input type="text" id="province" placeholder="Provincia" class="form-control form-control-lg" />
+                  <input type="text" id="province" autocomplete="off" placeholder="Provincia" class="form-control form-control-lg" />
                 </div>
               </div>
             </div>
@@ -64,7 +64,22 @@
             <button type="submit" class="btn btn-light btn-block mb-4">Genera</button>
           </form>
 
-          <p class="output"></p>
+          <p class="creation-output text-center"></p>
+      </div>
+
+      <div class="validate-code">
+        <h2 class="title text-center mt-5">CONVALIDA CODICE FISCALE</h2>
+        <form class="validate-form mt-5">
+          <div class="row">
+            <div class="col-12 mb-4">
+              <div class="form-outline form-white">
+                <input type="text" id="code" autocomplete="off" placeholder="Codice Fiscale" class="form-control form-control-lg" />
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <p class="validation-output text-center"></p>
       </div>
     </div>
 

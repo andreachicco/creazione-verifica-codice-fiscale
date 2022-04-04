@@ -15,7 +15,7 @@ async function getTownFromFile(inputTown, fileName){
         const response = await fetch(fileName);
         const towns = await response.json();
 
-        const selectedTown = towns.find(town => town.nome.toLowerCase() === inputTown.toLowerCase());
+        const selectedTown = towns.find(town => town.nome.toLowerCase() === inputTown.toLowerCase() || town.codice.toLowerCase() === inputTown.toLowerCase());
 
         return selectedTown;
     }
@@ -144,7 +144,6 @@ class CodiceFiscale {
             else total += alphanumericChars.odd[letter];
         });
 
-        console.log(total, (total % 26));
         return total % 26 < alphabet.length ? alphabet[total % 26] : alphabet[(total % 26) - 1];
     }
 
@@ -162,7 +161,7 @@ class CodiceFiscale {
         const day = userData.sex === 'm' ? date[2] : parseInt(date[2]) + 40;
 
         //Codice Comune
-        const town = await getTownFromFile(userData.town, '../comuni.json');
+        const town = await getTownFromFile(userData.town, './comuni.json');
 
         if(!town) {
             alert('Inserire comune valido!');
@@ -177,6 +176,55 @@ class CodiceFiscale {
         code += checkChar;
 
         return code.toUpperCase();
+    }
+
+    #isValidName(name) {
+        //Convalida Cognome e Nome
+        const namePattern = /\d/; 
+        return !(namePattern.test(name));
+    }
+
+    #isValidYear(year) {
+        //Convalida anno di nascita
+        return !isNaN(year);
+    }
+
+    #isValidMonthLetter(letter) {
+        return monthLetters.includes(letter);
+    }
+
+    #isBirthDayValid(day) {
+        return !isNaN(day) && (day > 0 && day <= 71);
+    }
+
+    async #isTownCodeValid(code) {
+        const town = await getTownFromFile(code, './comuni.json');
+        
+        return !!(town);
+    }
+
+    async validateCode(code) {
+
+        if(code.length !== 16) return false;
+
+        const name = code.substring(0, 6);
+        const isValidName = this.#isValidName(name);
+
+        const birthYear = code.substring(6, 8);
+        const isValidYear = this.#isValidYear(birthYear);
+
+        const monthLetter = code.substring(8, 9);
+        const isMonthLetterValid = this.#isValidMonthLetter(monthLetter);
+
+        const birthDay = code.substring(9, 11);
+        const isBirthDayValid = this.#isBirthDayValid(birthDay);
+
+        const townCode = code.substring(11, 15);
+        const isTownCodeValid = await this.#isTownCodeValid(townCode);
+
+        const checkLetter = this.#calculateLastLetter(code.substring(0, code.length - 1));
+
+        return (isValidName && isValidYear && isMonthLetterValid && isBirthDayValid && isTownCodeValid && checkLetter === code[code.length - 1]);
     }
 }
 
