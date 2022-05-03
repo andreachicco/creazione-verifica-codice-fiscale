@@ -150,8 +150,8 @@ class CodiceFiscale {
     async generateCode(userData) {
 
         //Cognome, Nome
-        const surname = this.#generateCodeSName(userData.surname, true);
-        const name = this.#generateCodeSName(userData.name);
+        const surname = this.#generateCodeSName(userData.surname.replace(/\s/g, ''), true);
+        const name = this.#generateCodeSName(userData.name.replace(/\s/g, ''));
 
         //Data
         const date = userData.birthDate.split('-');
